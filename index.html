@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RdvOptimiser</title>
+<meta name="description" content="Réorganisez vos tournées de rendez-vous en tenant compte des temps de trajet et des horaires imposés.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗺️</text></svg>">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">🗺️</span>
+    <div>
+      <h1>RdvOptimiser</h1>
+      <p>Tournée optimisée : trajets, durées et horaires imposés</p>
+    </div>
+  </div>
+  <button id="theme-toggle" class="icon-btn" type="button" title="Changer de thème" aria-label="Changer de thème">◐</button>
+</header>
+
+<main class="layout">
+  <aside class="panel">
+    <section class="card">
+      <h2>Paramètres</h2>
+
+      <label class="field">
+        <span>Point de départ</span>
+        <div class="ac" data-ac="depot">
+          <input id="depot-input" type="text" autocomplete="off" placeholder="12 rue de la Paix, Paris…">
+          <ul class="ac-list" hidden></ul>
+        </div>
+      </label>
+      <p id="depot-resolved" class="hint" hidden></p>
+
+      <div class="row">
+        <label class="field">
+          <span>Date</span>
+          <input id="start-date" type="date">
+        </label>
+        <label class="field">
+          <span>Heure de départ</span>
+          <input id="start-time" type="time" value="08:30">
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Durée de rendez-vous par défaut</span>
+        <div class="with-unit">
+          <input id="default-duration" type="number" min="5" max="480" step="5" value="30">
+          <em>min</em>
+        </div>
+      </label>
+
+      <input id="duration-range" type="range" min="5" max="180" step="5" value="30" aria-label="Durée de rendez-vous par défaut">
+
+      <label class="check">
+        <input id="return-home" type="checkbox">
+        <span>Retour au point de départ en fin de tournée</span>
+      </label>
+
+      <details class="advanced">
+        <summary>Avancé</summary>
+        <label class="field">
+          <span>Serveur OSRM</span>
+          <input id="osrm-url" type="url" placeholder="https://router.project-osrm.org">
+        </label>
+        <label class="field">
+          <span>Vitesse de repli (km/h)</span>
+          <input id="fallback-speed" type="number" min="5" max="130" step="5" value="45">
+        </label>
+        <p class="hint">Le repli est utilisé si le serveur de routage ne répond pas : distances à vol d'oiseau × 1,3.</p>
+      </details>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Rendez-vous</h2>
+        <span id="stop-count" class="pill">0</span>
+      </div>
+
+      <div class="ac add-row" data-ac="stop">
+        <input id="stop-input" type="text" autocomplete="off" placeholder="Ajouter une adresse…">
+        <ul class="ac-list" hidden></ul>
+      </div>
+
+      <ul id="stop-list" class="stops"></ul>
+      <p id="stop-empty" class="empty">Aucun rendez-vous. Ajoutez au moins deux adresses.</p>
+    </section>
+
+    <div class="actions">
+      <button id="optimize" class="btn primary" type="button">Optimiser la tournée</button>
+      <button id="reset" class="btn ghost" type="button">Réinitialiser</button>
+    </div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </aside>
+
+  <section class="content">
+    <div id="summary" class="summary" hidden></div>
+    <div id="map" class="map"></div>
+    <div id="timeline" class="timeline"></div>
+  </section>
+</main>
+
+<footer class="footnote">
+  Données&nbsp;: © contributeurs <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · géocodage Nominatim · routage OSRM.
+  Tout est calculé dans votre navigateur.
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>

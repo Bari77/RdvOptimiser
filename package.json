@@ -1,0 +1,11 @@
+{
+  "name": "rdvoptimiser",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Optimisation de tournees de rendez-vous, 100% front",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/optimizer.test.mjs",
+    "start": "npx --yes serve ."
+  }
+}
